@@ -3,224 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookery: AI Recipes - Transform Your Cooking with AI</title>
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Transform your cooking with AI-powered recipe generation. Create delicious, personalized recipes instantly with Cookery.">
-    <meta name="keywords" content="AI recipes, cooking, recipe generator, food, kitchen, meal planning">
-    <meta name="author" content="Cookery AI">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Cookery: AI Recipes">
-    <meta property="og:description" content="Transform your cooking with AI-powered recipe generation. Create delicious, personalized recipes instantly.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="web/icon-512-maskable.png">
-    
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Cookery: AI Recipes">
-    <meta name="twitter:description" content="Transform your cooking with AI-powered recipe generation.">
-    <meta name="twitter:image" content="web/icon-512-maskable.png">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/web/favicon.ico">
-    
+    <title>Cookery - AI Recipe Maker & Community</title>
+    <meta name="description" content="Create delicious recipes with AI and share them with a community of food lovers. Coming soon!">
+    <link rel="icon" href="web/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body { 
-            font-family: 'Inter', sans-serif;
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .container {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .gradient-bg {
-            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 50%, #45B7D1 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .gradient-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-        
-        .brand-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            background: linear-gradient(45deg, #ffffff, #f0f0f0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        
-        .glass-effect {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        .hero-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
         .floating {
-            animation: floating 3s ease-in-out infinite;
+            animation: float 6s ease-in-out infinite;
         }
-        
-        .pulse {
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .pulse-button {
             animation: pulse 2s infinite;
         }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        .hero-gradient {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-            backdrop-filter: blur(10px);
-        }
-        
-        .feature-card {
-            transition: all 0.3s ease;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(255,107,107,0.4);
-        }
-        
-        .testimonial-card {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50">
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 glass-effect border-b border-white/20">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                        <i class="fas fa-chef-hat text-white text-lg"></i>
+    <nav class="fixed w-full bg-white/95 backdrop-blur-sm z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold gradient-text">Cookery</h1>
                     </div>
-                    <h1 class="brand-title text-2xl">Cookery</h1>
                 </div>
-                <div class="hidden md:flex space-x-6">
-                    <a href="#features" class="text-white/80 hover:text-white transition">Features</a>
-                    <a href="#how-it-works" class="text-white/80 hover:text-white transition">How It Works</a>
-                    <a href="#testimonials" class="text-white/80 hover:text-white transition">Testimonials</a>
-                    <button onclick="scrollToApp()" class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg transition">
-                        Launch App
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#features" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Features</a>
+                        <a href="#how-it-works" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">How It Works</a>
+                        <a href="#community" class="text-gray-600 hover:text-gray-900 px-3 py-2 text-sm font-medium transition-colors">Community</a>
+                        <button class="hero-gradient text-white px-6 py-2 rounded-full text-sm font-medium hover:opacity-90 transition-opacity pulse-button">
+                            Join Waitlist
+                        </button>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 p-2">
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
                     </button>
                 </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#features" class="block text-gray-600 hover:text-gray-900 px-3 py-2 text-base font-medium">Features</a>
+                <a href="#how-it-works" class="block text-gray-600 hover:text-gray-900 px-3 py-2 text-base font-medium">How It Works</a>
+                <a href="#community" class="block text-gray-600 hover:text-gray-900 px-3 py-2 text-base font-medium">Community</a>
+                <button class="w-full text-left hero-gradient text-white px-6 py-2 rounded-full text-base font-medium">
+                    Join Waitlist
+                </button>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex items-center justify-center relative">
-        <div class="absolute inset-0 hero-gradient"></div>
-        <div class="container mx-auto px-4 text-center relative z-10">
-            <div class="max-w-4xl mx-auto">
-                <div class="mb-8 floating">
-                    <div class="w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto shadow-2xl">
-                        <i class="fas fa-robot text-white text-5xl"></i>
-                    </div>
+    <section class="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <div class="inline-flex items-center bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                    <span class="w-2 h-2 bg-purple-600 rounded-full mr-2"></span>
+                    Coming Soon - Be the First to Know
                 </div>
-                
-                <h1 class="brand-title text-5xl md:text-7xl mb-6">
-                    Cookery: AI Recipes
+                <h1 class="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+                    Create Amazing Recipes with
+                    <span class="gradient-text"> AI Magic</span>
                 </h1>
-                
-                <p class="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto leading-relaxed">
-                    Transform your cooking with <span class="font-semibold">AI-powered recipe generation</span>. 
-                    Create delicious, personalized recipes instantly.
+                <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                    Cookery uses artificial intelligence to help you create delicious, personalized recipes. 
+                    Share your culinary creations with a community of food lovers and discover new dishes from around the world.
                 </p>
-                
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button onclick="scrollToApp()" class="btn-primary text-white px-8 py-4 rounded-xl text-lg font-semibold flex items-center space-x-3 shadow-xl">
-                        <i class="fas fa-wand-magic-sparkles"></i>
-                        <span>Start Creating</span>
-                        <i class="fas fa-arrow-right"></i>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                    <button class="hero-gradient text-white px-8 py-4 rounded-full text-lg font-semibold hover:opacity-90 transition-opacity pulse-button">
+                        Get Early Access
                     </button>
-                    <button onclick="playDemo()" class="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold flex items-center space-x-3 backdrop-blur-sm transition">
-                        <i class="fas fa-play-circle"></i>
-                        <span>Watch Demo</span>
+                    <button class="bg-white text-gray-800 px-8 py-4 rounded-full text-lg font-semibold border-2 border-gray-200 hover:border-gray-300 transition-colors">
+                        Watch Demo
                     </button>
                 </div>
-                
-                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-white mb-2">10K+</div>
-                        <div class="text-white/80">Recipes Generated</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-white mb-2">50+</div>
-                        <div class="text-white/80">Cuisine Styles</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-4xl font-bold text-white mb-2">4.9★</div>
-                        <div class="text-white/80">User Rating</div>
+                <div class="relative floating">
+                    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl mx-auto">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">10K+</div>
+                                <div class="text-gray-600">Recipes Created</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">5K+</div>
+                                <div class="text-gray-600">Active Cooks</div>
+                            </div>
+                            <div>
+                                <div class="text-3xl font-bold gradient-text">50+</div>
+                                <div class="text-gray-600">Cuisines</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -228,342 +134,189 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-20 bg-white/10 backdrop-blur-sm">
-        <div class="container mx-auto px-4">
+    <section id="features" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white mb-4">Why Choose Cookery?</h2>
-                <p class="text-xl text-white/80 max-w-3xl mx-auto">
-                    Discover the features that make Cookery the ultimate AI recipe companion
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Why Choose <span class="gradient-text">Cookery</span>?
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Experience the future of cooking with our AI-powered features designed to make every meal memorable.
                 </p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-magic text-white text-2xl"></i>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card-hover bg-gray-50 p-8 rounded-2xl">
+                    <div class="w-12 h-12 hero-gradient rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">AI-Powered</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Advanced AI algorithms create unique, delicious recipes tailored to your preferences and dietary needs.
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">AI Recipe Generation</h3>
+                    <p class="text-gray-600">
+                        Get personalized recipe suggestions based on your ingredients, dietary preferences, and cooking skills.
                     </p>
                 </div>
-                
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-clock text-white text-2xl"></i>
+                <div class="card-hover bg-gray-50 p-8 rounded-2xl">
+                    <div class="w-12 h-12 hero-gradient rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Instant Results</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Get personalized recipes in seconds, not hours. No more endless searching for the perfect meal.
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Share & Discover</h3>
+                    <p class="text-gray-600">
+                        Share your favorite recipes with the community and discover new dishes from home cooks worldwide.
                     </p>
                 </div>
-                
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-globe text-white text-2xl"></i>
+                <div class="card-hover bg-gray-50 p-8 rounded-2xl">
+                    <div class="w-12 h-12 hero-gradient rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Global Cuisines</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        From Italian to Asian, Mexican to Mediterranean - explore authentic recipes from around the world.
-                    </p>
-                </div>
-                
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-users text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Community Driven</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Share your favorite recipes with the community and discover amazing creations from other home chefs.
-                    </p>
-                </div>
-                
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-mobile-alt text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Mobile Ready</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Works perfectly on all devices. Install as a PWA for native app experience.
-                    </p>
-                </div>
-                
-                <div class="feature-card p-8 rounded-2xl">
-                    <div class="w-16 h-16 bg-gradient-to-r from-pink-500 to-rose-500 rounded-2xl flex items-center justify-center mb-6">
-                        <i class="fas fa-heart text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Made with Love</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Built by food lovers, for food lovers. Every feature designed to enhance your cooking journey.
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Smart Meal Planning</h3>
+                    <p class="text-gray-600">
+                        Plan your weekly meals with AI assistance that considers nutrition, budget, and time constraints.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="py-20">
-        <div class="container mx-auto px-4">
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-20 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white mb-4">How It Works</h2>
-                <p class="text-xl text-white/80 max-w-3xl mx-auto">
-                    Get started in three simple steps
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    How <span class="gradient-text">Cookery</span> Works
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Get started in minutes and transform your cooking experience with our simple three-step process.
                 </p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-6 pulse">
-                        <span class="text-white text-3xl font-bold">1</span>
+                    <div class="w-20 h-20 hero-gradient rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">1</span>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Describe Your Idea</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Tell us what you're craving - ingredients, dietary preferences, cooking style, or any special requirements.
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Tell AI What You Have</h3>
+                    <p class="text-gray-600">
+                        Input your available ingredients, dietary preferences, and cooking time.
                     </p>
                 </div>
-                
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-6 pulse">
-                        <span class="text-white text-3xl font-bold">2</span>
+                    <div class="w-20 h-20 hero-gradient rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">2</span>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">AI Creates Recipe</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Our AI analyzes your request and crafts a unique, detailed recipe with ingredients and step-by-step instructions.
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Get Perfect Recipes</h3>
+                    <p class="text-gray-600">
+                        Receive AI-generated recipes tailored to your needs with step-by-step instructions.
                     </p>
                 </div>
-                
                 <div class="text-center">
-                    <div class="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6 floating">
-                        <span class="text-white text-3xl font-bold">3</span>
+                    <div class="w-20 h-20 hero-gradient rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-3xl font-bold text-white">3</span>
                     </div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Cook & Share</h3>
-                    <p class="text-white/80 leading-relaxed">
-                        Follow the instructions, enjoy your delicious meal, and share your creation with the community!
+                    <h3 class="text-xl font-semibold text-gray-900 mb-4">Share & Enjoy</h3>
+                    <p class="text-gray-600">
+                        Cook amazing meals and share your creations with the Cookery community.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 bg-white/10 backdrop-blur-sm">
-        <div class="container mx-auto px-4">
+    <!-- Community Section -->
+    <section id="community" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-bold text-white mb-4">What Home Chefs Say</h2>
-                <p class="text-xl text-white/80 max-w-3xl mx-auto">
-                    Join thousands of satisfied cooks who transformed their kitchen experience
+                <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                    Join Our <span class="gradient-text">Community</span>
+                </h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    Connect with food lovers from around the world and be part of the cooking revolution.
                 </p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                <div class="testimonial-card p-8 rounded-2xl">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-star text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-white">Sarah M.</div>
-                            <div class="text-white/60 text-sm">Home Cook</div>
-                        </div>
-                    </div>
-                    <p class="text-white/80 mb-4 italic">
-                        "Cookery completely changed how I plan meals. The AI understands my family's preferences and suggests recipes we actually love!"
-                    </p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card p-8 rounded-2xl">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-star text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-white">Mike R.</div>
-                            <div class="text-white/60 text-sm">Food Blogger</div>
-                        </div>
-                    </div>
-                    <p class="text-white/80 mb-4 italic">
-                        "As someone who writes about food, I'm amazed by the creativity of the AI. Every recipe feels authentic and well-tested."
-                    </p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card p-8 rounded-2xl">
-                    <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center mr-4">
-                            <i class="fas fa-star text-white"></i>
-                        </div>
-                        <div>
-                            <div class="font-semibold text-white">Emily L.</div>
-                            <div class="text-white/60 text-sm">Busy Parent</div>
-                        </div>
-                    </div>
-                    <p class="text-white/80 mb-4 italic">
-                        "I save hours every week on meal planning. Cookery gives me healthy, quick recipes my kids actually eat!"
-                    </p>
-                    <div class="flex text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-20">
-        <div class="container mx-auto px-4 text-center">
-            <div class="glass-effect p-12 rounded-3xl max-w-4xl mx-auto">
-                <h2 class="text-4xl font-bold text-white mb-6">Ready to Transform Your Cooking?</h2>
-                <p class="text-xl text-white/90 mb-8">
-                    Join thousands of home chefs who are already creating amazing recipes with AI
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-12 text-center text-white">
+                <h3 class="text-3xl font-bold mb-4">Be the First to Experience Cookery</h3>
+                <p class="text-xl mb-8 opacity-90">
+                    Join our waitlist and get exclusive early access, special features, and a lifetime premium discount.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <button onclick="scrollToApp()" class="btn-primary text-white px-8 py-4 rounded-xl text-lg font-semibold flex items-center space-x-3 shadow-xl">
-                        <i class="fas fa-rocket"></i>
-                        <span>Start Cooking Now</span>
-                    </button>
-                    <button onclick="scrollToApp()" class="bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-xl text-lg font-semibold flex items-center space-x-3 backdrop-blur-sm transition">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>Install App</span>
+                <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                    <input type="email" placeholder="Enter your email" class="flex-1 px-6 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-4 focus:ring-white/30">
+                    <button class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors">
+                        Join Waitlist
                     </button>
                 </div>
+                <p class="mt-4 text-sm opacity-75">
+                    No spam, unsubscribe anytime. We respect your privacy.
+                </p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="gradient-bg text-white py-12 relative">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Product</h3>
-                    <ul class="space-y-2 text-white/80">
-                        <li><a href="#features" class="hover:text-white transition">Features</a></li>
-                        <li><a href="#how-it-works" class="hover:text-white transition">How It Works</a></li>
-                        <li><a href="#testimonials" class="hover:text-white transition">Testimonials</a></li>
-                        <li><a href="#" onclick="scrollToApp()" class="hover:text-white transition">Launch App</a></li>
+                    <h3 class="text-2xl font-bold gradient-text mb-4">Cookery</h3>
+                    <p class="text-gray-400">
+                        AI-powered recipe creation and sharing platform for the modern home cook.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Product</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Roadmap</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Cuisines</h3>
-                    <ul class="space-y-2 text-white/80">
-                        <li><a href="#" onclick="scrollToApp()" class="hover:text-white transition">Italian</a></li>
-                        <li><a href="#" onclick="scrollToApp()" class="hover:text-white transition">Asian</a></li>
-                        <li><a href="#" onclick="scrollToApp()" class="hover:text-white transition">Mexican</a></li>
-                        <li><a href="#" onclick="scrollToApp()" class="hover:text-white transition">Mediterranean</a></li>
+                    <h4 class="font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
                     </ul>
                 </div>
-                
                 <div>
-                    <h3 class="text-xl font-semibold mb-4">Support</h3>
-                    <ul class="space-y-2 text-white/80">
-                        <li><a href="#" class="hover:text-white transition">Help Center</a></li>
-                        <li><a href="#" class="hover:text-white transition">Contact Us</a></li>
-                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-xl font-semibold mb-4">Connect</h3>
+                    <h4 class="font-semibold mb-4">Connect</h4>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition">
-                            <i class="fab fa-twitter text-white"></i>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition">
-                            <i class="fab fa-instagram text-white"></i>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
                         </a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition">
-                            <i class="fab fa-facebook text-white"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center transition">
-                            <i class="fab fa-youtube text-white"></i>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-gray-700 transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z"/>
+                            </svg>
                         </a>
                     </div>
                 </div>
             </div>
-            
-            <div class="border-t border-white/20 pt-8">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-4 md:mb-0">
-                        <div class="flex items-center space-x-3 mb-2">
-                            <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                                <i class="fas fa-chef-hat text-white text-sm"></i>
-                            </div>
-                            <h3 class="text-lg font-bold brand-title">Cookery</h3>
-                        </div>
-                        <p class="text-white/80">AI-Powered Recipe Generation</p>
-                    </div>
-                    
-                    <div class="text-center md:text-right">
-                        <p class="mb-2 flex items-center justify-center md:justify-end">
-                            <i class="fas fa-heart text-red-400 mx-2"></i>
-                            Made with love for food lovers
-                        </p>
-                        <p class="text-white/60 text-sm">© 2024 Cookery: AI Recipes | Powered by AI</p>
-                    </div>
-                </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Cookery. All rights reserved. Made with ❤️ for food lovers everywhere.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll functionality
-        function scrollToApp() {
-            // This would scroll to the app section if it existed
-            // For now, we'll show a notification
-            showNotification('App launching soon! Get ready to transform your cooking. 🚀', 'info');
-        }
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
         
-        function playDemo() {
-            showNotification('Demo video coming soon! 🎥', 'info');
-        }
-        
-        // Notification system
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 transform transition-all duration-300 glass-effect ${
-                type === 'success' ? 'text-green-600' :
-                type === 'error' ? 'text-red-600' :
-                'text-blue-600'
-            }`;
-            notification.innerHTML = `
-                <div class="flex items-center">
-                    <i class="fas ${
-                        type === 'success' ? 'fa-check-circle' :
-                        type === 'error' ? 'fa-exclamation-circle' :
-                        'fa-info-circle'
-                    } mr-3"></i>
-                    <span class="font-medium">${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
-        // Smooth scroll for anchor links
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -573,17 +326,35 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
                 }
             });
         });
-        
-        // Add scroll effect to navigation
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg');
-            } else {
-                nav.classList.remove('shadow-lg');
+
+        // Form submission (placeholder)
+        document.querySelectorAll('input[type="email"]').forEach(input => {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    // Add your form submission logic here
+                    alert('Thank you for joining our waitlist! We\'ll keep you updated.');
+                    input.value = '';
+                }
+            });
+        });
+
+        // Button click handlers
+        document.querySelectorAll('button').forEach(button => {
+            if (button.textContent.includes('Join Waitlist') || button.textContent.includes('Get Early Access')) {
+                button.addEventListener('click', () => {
+                    alert('Thank you for your interest! The waitlist form will be available soon.');
+                });
+            }
+            if (button.textContent.includes('Watch Demo')) {
+                button.addEventListener('click', () => {
+                    alert('Demo video coming soon! Join our waitlist to be notified.');
+                });
             }
         });
     </script>
