@@ -13,8 +13,65 @@
         .glass-effect { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
         .recipe-card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
         .gradient-text { background: linear-gradient(90deg, #f97316, #ec4899); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .loader { border-top-color: #f97316; animation: spinner 1.5s linear infinite; }
-        @keyframes spinner { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .loader {
+            border-top-color: #f97316;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .scrollbar-hide {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* TikTok-style Reels CSS */
+        .short-wrapper {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 24px;
+        }
+        
+        .video-card {
+            height: 85vh;
+            aspect-ratio: 9/16;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .action-btn {
+            background: #ffffff;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            color: #4b4b4b;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .action-btn:hover {
+            background: #f8f8f8;
+            transform: scale(1.05);
+            color: #111;
+        }
         .shimmer {
             background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
             background-size: 200% 100%;
@@ -115,7 +172,7 @@
 
             <div class="relative min-h-[600px]">
                 <section id="sizzle-section" class="page-content page-hidden hidden">
-                    <!-- Reel-style container -->
+                    <!-- TikTok-style Reels container -->
                     <div class="fixed inset-0 bg-black z-10" id="reelContainer">
                         <!-- Header with create button -->
                         <div class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-black/50 to-transparent">
@@ -127,8 +184,8 @@
                             </div>
                         </div>
                         
-                        <!-- Reels viewport -->
-                        <div class="h-full overflow-hidden snap-y snap-mandatory scroll-smooth" id="reelsViewport">
+                        <!-- TikTok-style Reels viewport -->
+                        <div class="h-full overflow-y-scroll snap-y snap-mandatory scrollbar-hide" id="reelsViewport">
                             <!-- Reels will be dynamically loaded here -->
                             <div class="h-full flex items-center justify-center text-white">
                                 <div class="text-center">
@@ -174,7 +231,7 @@
                         <h2 class="text-2xl font-bold mb-6 flex items-center gap-2">
                             <i class="fa-solid fa-utensils text-orange-500"></i> Recipe Lab
                         </h2>
-                        <div class="space-y-6">
+                        <div class="space-y-8">
                             <div>
                                 <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Creation Method</label>
                                 <div class="flex gap-2">
@@ -195,9 +252,11 @@
                                            class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
                                 </div>
                             
-                            <div>
-                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Dietary Requirements</label>
-                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Dietary Requirements</label>
+                                    <p class="text-xs text-slate-400 mb-3">Select all that apply (multiple selections allowed)</p>
+                                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
                                     <button onclick="selectDietaryCard(this, 'No Dietary Requirements')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium bg-orange-50 border-orange-400 text-orange-600">
                                         <i class="fa-solid fa-check-circle mr-1"></i>No Requirements
                                     </button>
@@ -1022,15 +1081,26 @@
                     const dietaryValue = preferences.dietary_requirements;
                     hiddenInput.value = dietaryValue;
                     
-                    // Check if it's a preset option
-                    const presetCard = document.querySelector(`[onclick*="${dietaryValue}"]`);
-                    if (presetCard) {
-                        selectDietaryCard(presetCard, dietaryValue);
-                    } else {
-                        // It's a custom value
-                        customInput.value = dietaryValue;
-                        handleCustomDietaryInput();
-                    }
+                    // Handle multiple selections (comma-separated)
+                    const selectedValues = dietaryValue.split(', ').filter(v => v.trim());
+                    
+                    // Clear all selections first
+                    document.querySelectorAll('.dietary-card').forEach(c => {
+                        c.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                    });
+                    
+                    // Select each value
+                    selectedValues.forEach(value => {
+                        const trimmedValue = value.trim();
+                        const presetCard = document.querySelector(`[onclick*="${trimmedValue}"]`);
+                        if (presetCard) {
+                            presetCard.classList.add('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                        } else if (trimmedValue && !trimmedValue.includes('No Dietary Requirements')) {
+                            // It's a custom value
+                            customInput.value = trimmedValue;
+                            handleCustomDietaryInput();
+                        }
+                    });
                 } else {
                     // Set default
                     hiddenInput.value = 'No Dietary Requirements';
@@ -1049,26 +1119,55 @@
             }
         }
 
-        function selectDietaryCard(card, value) {
-            // Remove selection from all cards
-            document.querySelectorAll('.dietary-card').forEach(c => {
-                c.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
-                c.classList.remove('border-blue-400', 'bg-blue-50', 'text-blue-600');
-            });
-            
-            // Reset custom card
-            const customCard = document.getElementById('customDietaryCard');
-            customCard.classList.remove('border-blue-400', 'bg-blue-50');
-            customCard.classList.add('border-dashed', 'border-slate-300');
-            
-            // Add selection to clicked card
-            card.classList.add('bg-orange-50', 'border-orange-400', 'text-orange-600');
-            
-            // Update hidden input
-            document.getElementById('dietaryRequirements').value = value;
+        function toggleDietaryCard(card, value) {
+            // Handle "No Requirements" special case
+            if (value === 'No Dietary Requirements') {
+                // Deselect all other cards
+                document.querySelectorAll('.dietary-card').forEach(c => {
+                    if (c !== card) {
+                        c.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                    }
+                });
+                
+                // Reset custom card
+                const customCard = document.getElementById('customDietaryCard');
+                customCard.classList.remove('border-blue-400', 'bg-blue-50');
+                customCard.classList.add('border-dashed', 'border-slate-300');
+                document.getElementById('customDietaryInput').value = '';
+                
+                // Toggle "No Requirements"
+                card.classList.toggle('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                
+                // Update hidden input
+                const isSelected = card.classList.contains('bg-orange-50');
+                document.getElementById('dietaryRequirements').value = isSelected ? 'No Dietary Requirements' : '';
+            } else {
+                // Deselect "No Requirements" if it's selected
+                const noRequirementsCard = document.querySelector('[onclick*="No Dietary Requirements"]');
+                if (noRequirementsCard) {
+                    noRequirementsCard.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                }
+                
+                // Toggle the clicked card
+                card.classList.toggle('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                
+                // Update hidden input with all selected values
+                const selectedCards = document.querySelectorAll('.dietary-card.bg-orange-50');
+                const selectedValues = Array.from(selectedCards).map(c => {
+                    const onclick = c.getAttribute('onclick');
+                    return onclick.match(/'([^']+)'/)[1];
+                });
+                
+                document.getElementById('dietaryRequirements').value = selectedValues.join(', ');
+            }
             
             // Save preference
             saveDietaryPreferences();
+        }
+
+        function selectDietaryCard(card, value) {
+            // Keep for backward compatibility
+            toggleDietaryCard(card, value);
         }
 
         function handleCustomDietaryInput() {
@@ -1159,7 +1258,7 @@
                     author: currentUser.name,
                     style,
                     likes: 0,
-                    img: 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop',
+                    img: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDYwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRjBBNSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0Y5NzAwQyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iNDAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPjx0ZXh0IHg9IjMwMCIgeT0iMjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgZm9udC1mYW1pbHk9IkFyaWFsIj5SZWNpcGUgSW1hZ2U8L3RleHQ+PC9zdmc+',
                     ingredients,
                     instructions,
                     user_id: currentUser.user_id
@@ -1949,6 +2048,11 @@
                 return;
             }
             
+            if (!recipeId) {
+                console.error('Recipe ID is undefined');
+                return;
+            }
+            
             try {
                 const isFavorited = await checkIfFavorited(recipeId);
                 
@@ -1958,7 +2062,7 @@
                     button.querySelector('i').classList.remove('text-orange-500');
                     showToast('Recipe removed from favorites!');
                 } else {
-                    await supabaseClient.from('favorites').insert({ user_id: currentUser.user_id, recipe_id });
+                    await supabaseClient.from('favorites').insert({ user_id: currentUser.user_id, recipe_id: recipeId });
                     button.classList.add('text-orange-500');
                     button.querySelector('i').classList.add('text-orange-500');
                     showToast('Recipe added to favorites!');
@@ -2089,66 +2193,73 @@
 
         async function createReelCard(recipe) {
             const div = document.createElement('div');
-            div.className = 'h-full w-full relative snap-start';
+            div.className = 'h-screen w-full flex justify-center items-center snap-start';
             
             const isLiked = await checkIfLiked(recipe.id);
             const isFavorited = await checkIfFavorited(recipe.id);
             const comments = await getComments(recipe.id);
             
             div.innerHTML = `
-                <!-- Video/Image Background -->
-                <div class="absolute inset-0 bg-black">
-                    ${recipe.video_url ? 
-                        `<video src="${recipe.video_url}" 
-                                class="w-full h-full object-cover" 
-                                loop muted autoplay playsinline
-                                id="reel-video-${recipe.id}"></video>` :
-                        `<img src="${recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop'}" 
-                             alt="${recipe.title}" 
-                             class="w-full h-full object-cover">`
-                    }
-                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
-                </div>
-                
-                <!-- Content Overlay -->
-                <div class="absolute inset-0 flex flex-col justify-between p-6">
-                    <!-- Top Content -->
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h3 class="text-white text-2xl font-bold mb-2 drop-shadow-lg">${recipe.title}</h3>
-                            <p class="text-white/90 text-sm drop-shadow">By ${recipe.author || 'Anonymous Chef'}</p>
+                <!-- TikTok-style Video Container -->
+                <div class="short-wrapper">
+                    <!-- Video Card -->
+                    <div class="video-card">
+                        ${recipe.video_url ? 
+                            `<video class="w-full h-full object-cover" loop muted playsinline id="reel-video-${recipe.id}">
+                                <source src="${recipe.video_url}" type="video/mp4">
+                            </video>` :
+                            `<img src="${recipe.img || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjgwMCIgdmlld0JveD0iMCAwIDYwMCA4MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0ZGRjBBNSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0Y5NzAwQyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHdpZHRoPSI2MDAiIGhlaWdodD0iODAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPjx0ZXh0IHg9IjMwMCIgeT0iNDAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgZm9udC1mYW1pbHk9IkFyaWFsIj5SZWNpcGUgSW1hZ2U8L3RleHQ+PC9zdmc+'}" 
+                                 alt="${recipe.title}" 
+                                 class="w-full h-full object-cover">`
+                        }
+                        
+                        <!-- Overlay Content -->
+                        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.author || 'Chef')}&background=orange&color=white" class="w-10 h-10 rounded-full border border-white/20">
+                                <div>
+                                    <span class="font-bold text-lg text-white">${recipe.title}</span>
+                                    <p class="text-sm text-white/80">By ${recipe.author || 'Anonymous Chef'}</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-100">${recipe.ingredients?.slice(0, 2).join(', ') || 'Delicious recipe'}...</p>
                         </div>
-                        <span class="bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-bold">${recipe.style}</span>
                     </div>
                     
-                    <!-- Bottom Actions -->
-                    <div class="flex justify-between items-end">
-                        <!-- Left Side - Description -->
-                        <div class="flex-1 mr-4">
-                            <p class="text-white/80 text-sm mb-4 line-clamp-3">
-                                ${recipe.ingredients?.slice(0, 2).join(', ') || 'Delicious recipe'}...
-                            </p>
+                    <!-- Side Action Buttons -->
+                    <div class="flex flex-col items-center space-y-5">
+                        <div class="flex flex-col items-center cursor-pointer" onclick="handleSizzleLike('${recipe.id}', this)">
+                            <div class="action-btn">
+                                <i class="fas fa-heart ${isLiked ? 'text-rose-500' : ''}"></i>
+                            </div>
+                            <span class="text-xs mt-1.5 font-bold text-gray-500 uppercase tracking-wider">${recipe.likes || 0}</span>
                         </div>
                         
-                        <!-- Right Side - Action Buttons -->
-                        <div class="flex flex-col gap-4">
-                            <button onclick="handleSizzleLike('${recipe.id}', this)" 
-                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
-                                <i class="fa-solid fa-heart ${isLiked ? 'text-red-500' : ''}"></i>
-                                <span class="block text-xs mt-1">${recipe.likes || 0}</span>
-                            </button>
-                            
-                            <button onclick="toggleFavorite('${recipe.id}', this)" 
-                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
-                                <i class="fa-solid fa-bookmark ${isFavorited ? 'text-orange-500' : ''}"></i>
-                                <span class="block text-xs mt-1">Save</span>
-                            </button>
-                            
-                            <button onclick="toggleComments('${recipe.id}')" 
-                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
-                                <i class="fa-solid fa-comment"></i>
-                                <span class="block text-xs mt-1">${comments.length}</span>
-                            </button>
+                        <div class="flex flex-col items-center cursor-pointer" onclick="toggleComments('${recipe.id}')">
+                            <div class="action-btn">
+                                <i class="fas fa-comment-dots"></i>
+                            </div>
+                            <span class="text-xs mt-1.5 font-bold text-gray-500 uppercase tracking-wider">${comments.length}</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center cursor-pointer" onclick="toggleFavorite('${recipe.id}', this)">
+                            <div class="action-btn">
+                                <i class="fas fa-bookmark ${isFavorited ? 'text-orange-500' : ''}"></i>
+                            </div>
+                            <span class="text-xs mt-1.5 font-bold text-gray-500 uppercase tracking-wider">Save</span>
+                        </div>
+                        
+                        <div class="flex flex-col items-center cursor-pointer">
+                            <div class="action-btn">
+                                <i class="fas fa-share-nodes"></i>
+                            </div>
+                            <span class="text-xs mt-1.5 font-bold text-gray-500 uppercase tracking-wider">Share</span>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <div class="w-12 h-12 rounded-xl bg-white shadow-md p-1 border border-gray-100">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(recipe.author || 'Chef')}&background=orange&color=white" class="w-full h-full rounded-lg object-cover">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2280,7 +2391,9 @@
         }
 
         async function checkIfFavorited(recipeId) {
-            if (!currentUser) return false;
+            if (!currentUser || !currentUser.user_id) return false;
+            if (!recipeId) return false;
+            
             try {
                 const { data } = await supabaseClient
                     .from('favorites')
