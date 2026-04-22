@@ -197,22 +197,66 @@
                             
                             <div>
                                 <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Dietary Requirements</label>
-                                <select id="dietaryRequirements" class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
-                                    <option value="No Dietary Requirements">No Dietary Requirements</option>
-                                    <option value="Vegan">Vegan</option>
-                                    <option value="Vegetarian">Vegetarian</option>
-                                    <option value="Gluten-Free">Gluten-Free</option>
-                                    <option value="Dairy-Free">Dairy-Free</option>
-                                    <option value="Nut-Free">Nut-Free</option>
-                                    <option value="Kosher">Kosher</option>
-                                    <option value="Halal">Halal</option>
-                                    <option value="Low-Sodium">Low-Sodium</option>
-                                    <option value="Sugar-Free">Sugar-Free</option>
-                                    <option value="Pescatarian">Pescatarian</option>
-                                    <option value="Paleo">Paleo</option>
-                                    <option value="Keto">Keto</option>
-                                </select>
+                                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
+                                    <button onclick="selectDietaryCard(this, 'No Dietary Requirements')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium bg-orange-50 border-orange-400 text-orange-600">
+                                        <i class="fa-solid fa-check-circle mr-1"></i>No Requirements
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Vegan')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-leaf mr-1"></i>Vegan
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Vegetarian')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-carrot mr-1"></i>Vegetarian
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Gluten-Free')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-wheat-awn-circle-exclamation mr-1"></i>Gluten-Free
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Dairy-Free')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-cheese mr-1"></i>Dairy-Free
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Nut-Free')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-peanut mr-1"></i>Nut-Free
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Kosher')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-david-star mr-1"></i>Kosher
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Halal')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-crescent-moon mr-1"></i>Halal
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Low-Sodium')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-droplet-slash mr-1"></i>Low-Sodium
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Sugar-Free')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-cube-sugar mr-1"></i>Sugar-Free
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Pescatarian')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-fish mr-1"></i>Pescatarian
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Paleo')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-bone mr-1"></i>Paleo
+                                    </button>
+                                    <button onclick="selectDietaryCard(this, 'Keto')" class="dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium">
+                                        <i class="fa-solid fa-fire mr-1"></i>Keto
+                                    </button>
+                                </div>
+                                
+                                <!-- Custom Dietary Requirement Card -->
+                                <div id="customDietaryCard" class="border-2 border-dashed border-slate-300 rounded-xl p-4 hover:border-orange-400 transition cursor-pointer">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center">
+                                            <i class="fa-solid fa-plus text-slate-400"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <input type="text" 
+                                                   id="customDietaryInput"
+                                                   placeholder="Add custom dietary requirement..." 
+                                                   class="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-orange-400 text-sm"
+                                                   onclick="event.stopPropagation()">
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <p class="text-xs text-slate-400 mt-1">Your dietary preferences will be saved for future recipes</p>
+                                <input type="hidden" id="dietaryRequirements" value="No Dietary Requirements">
                             </div>
                             
                             <div>
@@ -321,7 +365,7 @@
                                 </div>
                             </div>
                             <button id="generateBtn" onclick="generateRecipe()" class="w-full bg-orange-500 text-white py-5 rounded-2xl font-bold text-xl hover:bg-orange-600 transition-all active:scale-[0.98]">
-                                â¨ Generate Magic Recipe
+                                â¨ Generate Recipes
                             </button>
                             </div>
                             
@@ -970,24 +1014,111 @@
                     throw error;
                 }
                 
-                const dietarySelect = document.getElementById('dietaryRequirements');
+                const hiddenInput = document.getElementById('dietaryRequirements');
+                const customInput = document.getElementById('customDietaryInput');
+                const customCard = document.getElementById('customDietaryCard');
+                
                 if (preferences && preferences.dietary_requirements) {
-                    dietarySelect.value = preferences.dietary_requirements;
+                    const dietaryValue = preferences.dietary_requirements;
+                    hiddenInput.value = dietaryValue;
+                    
+                    // Check if it's a preset option
+                    const presetCard = document.querySelector(`[onclick*="${dietaryValue}"]`);
+                    if (presetCard) {
+                        selectDietaryCard(presetCard, dietaryValue);
+                    } else {
+                        // It's a custom value
+                        customInput.value = dietaryValue;
+                        handleCustomDietaryInput();
+                    }
                 } else {
-                    dietarySelect.value = 'No Dietary Requirements';
+                    // Set default
+                    hiddenInput.value = 'No Dietary Requirements';
+                    const defaultCard = document.querySelector('[onclick*="No Dietary Requirements"]');
+                    if (defaultCard) {
+                        selectDietaryCard(defaultCard, 'No Dietary Requirements');
+                    }
                 }
             } catch (err) {
                 console.error('Failed to load dietary preferences:', err);
                 // Set default on error
-                document.getElementById('dietaryRequirements').value = 'No Dietary Requirements';
+                const defaultCard = document.querySelector('[onclick*="No Dietary Requirements"]');
+                if (defaultCard) {
+                    selectDietaryCard(defaultCard, 'No Dietary Requirements');
+                }
             }
         }
 
-        // Add change listener to dietary requirements dropdown
+        function selectDietaryCard(card, value) {
+            // Remove selection from all cards
+            document.querySelectorAll('.dietary-card').forEach(c => {
+                c.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                c.classList.remove('border-blue-400', 'bg-blue-50', 'text-blue-600');
+            });
+            
+            // Reset custom card
+            const customCard = document.getElementById('customDietaryCard');
+            customCard.classList.remove('border-blue-400', 'bg-blue-50');
+            customCard.classList.add('border-dashed', 'border-slate-300');
+            
+            // Add selection to clicked card
+            card.classList.add('bg-orange-50', 'border-orange-400', 'text-orange-600');
+            
+            // Update hidden input
+            document.getElementById('dietaryRequirements').value = value;
+            
+            // Save preference
+            saveDietaryPreferences();
+        }
+
+        function handleCustomDietaryInput() {
+            const input = document.getElementById('customDietaryInput');
+            const value = input.value.trim();
+            const customCard = document.getElementById('customDietaryCard');
+            const hiddenInput = document.getElementById('dietaryRequirements');
+            
+            if (value) {
+                // Remove selection from preset cards
+                document.querySelectorAll('.dietary-card').forEach(c => {
+                    c.classList.remove('bg-orange-50', 'border-orange-400', 'text-orange-600');
+                });
+                
+                // Style custom card as selected
+                customCard.classList.remove('border-dashed', 'border-slate-300');
+                customCard.classList.add('border-blue-400', 'bg-blue-50');
+                
+                // Update hidden input
+                hiddenInput.value = value;
+                
+                // Save preference
+                saveDietaryPreferences();
+            } else {
+                // Reset custom card
+                customCard.classList.add('border-dashed', 'border-slate-300');
+                customCard.classList.remove('border-blue-400', 'bg-blue-50');
+                
+                // Reset to default
+                hiddenInput.value = 'No Dietary Requirements';
+                
+                // Select default card
+                const defaultCard = document.querySelector('[onclick*="No Dietary Requirements"]');
+                if (defaultCard) {
+                    selectDietaryCard(defaultCard, 'No Dietary Requirements');
+                }
+            }
+        }
+
+        // Add event listeners for dietary cards
         document.addEventListener('DOMContentLoaded', () => {
-            const dietarySelect = document.getElementById('dietaryRequirements');
-            if (dietarySelect) {
-                dietarySelect.addEventListener('change', saveDietaryPreferences);
+            const customInput = document.getElementById('customDietaryInput');
+            if (customInput) {
+                customInput.addEventListener('input', handleCustomDietaryInput);
+                customInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        customInput.blur();
+                    }
+                });
             }
         });
 
@@ -1548,6 +1679,22 @@
             }
         }
 
+        function showMyKitchen() {
+            if (!currentUser) {
+                showAuthErrorModal('My Kitchen');
+                return;
+            }
+            showSection('my-kitchen');
+        }
+
+        function showFavorites() {
+            if (!currentUser) {
+                showAuthErrorModal('Favorites');
+                return;
+            }
+            showSection('favorites');
+        }
+
         function handleFavorites() {
             if (!currentUser) {
                 showAuthErrorModal('Favorites');
@@ -1748,11 +1895,11 @@
             const likeBtn = document.getElementById('detailLikeBtn');
             const favoriteBtn = document.getElementById('detailFavoriteBtn');
             
-            likeBtn.onclick = () => handleRecipeLike(recipeId, likeBtn);
-            favoriteBtn.onclick = () => handleRecipeFavorite(recipeId, favoriteBtn);
+            likeBtn.onclick = () => handleRecipeLike(recipe.id, likeBtn);
+            favoriteBtn.onclick = () => handleRecipeFavorite(recipe.id, favoriteBtn);
             
             // Check current state
-            checkRecipeInteractions(recipeId, likeBtn, favoriteBtn);
+            checkRecipeInteractions(recipe.id, likeBtn, favoriteBtn);
         }
 
         async function checkRecipeInteractions(recipeId, likeBtn, favoriteBtn) {
@@ -2045,12 +2192,14 @@
                 // Add video error handling
                 video.addEventListener('error', () => {
                     console.log('Video failed to load, falling back to image');
-                    // Replace video with image
-                    const fallbackImg = document.createElement('img');
-                    fallbackImg.src = recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
-                    fallbackImg.alt = recipe.title;
-                    fallbackImg.className = 'w-full h-full object-cover';
-                    videoContainer.replaceChild(fallbackImg, video);
+                    // Replace video with image only if it exists and is a child
+                    if (video && videoContainer && videoContainer.contains(video)) {
+                        const fallbackImg = document.createElement('img');
+                        fallbackImg.src = recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
+                        fallbackImg.alt = recipe.title;
+                        fallbackImg.className = 'w-full h-full object-cover';
+                        videoContainer.replaceChild(fallbackImg, video);
+                    }
                 });
                 
                 // Add video load success handling
@@ -2064,8 +2213,8 @@
                             // Try to play with error handling
                             video.play().catch(e => {
                                 console.log('Video play failed:', e);
-                                // If play fails, replace with image
-                                if (video.parentNode) {
+                                // If play fails, replace with image only if it exists and is a child
+                                if (video && videoContainer && videoContainer.contains(video)) {
                                     const fallbackImg = document.createElement('img');
                                     fallbackImg.src = recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
                                     fallbackImg.alt = recipe.title;
