@@ -115,17 +115,27 @@
 
             <div class="relative min-h-[600px]">
                 <section id="sizzle-section" class="page-content page-hidden hidden">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold">Sizzle Feed</h2>
-                        <button onclick="showCreateSizzle()" class="bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
-                            <i class="fa-solid fa-plus mr-2"></i>Create Sizzle
-                        </button>
-                    </div>
-                    <div class="space-y-6" id="sizzleFeed">
-                        <!-- YouTube-style recipe cards will be dynamically loaded here -->
-                        <div class="col-span-full py-12 flex flex-col items-center justify-center text-slate-400">
-                            <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-10 w-10 mb-4"></div>
-                            <p>Loading sizzle feed...</p>
+                    <!-- Reel-style container -->
+                    <div class="fixed inset-0 bg-black z-10" id="reelContainer">
+                        <!-- Header with create button -->
+                        <div class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-black/50 to-transparent">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-white text-xl font-bold">Sizzle Reels</h2>
+                                <button onclick="redirectToRecipeLab()" class="bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
+                                    <i class="fa-solid fa-plus mr-2"></i>Create Sizzle
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Reels viewport -->
+                        <div class="h-full overflow-hidden snap-y snap-mandatory scroll-smooth" id="reelsViewport">
+                            <!-- Reels will be dynamically loaded here -->
+                            <div class="h-full flex items-center justify-center text-white">
+                                <div class="text-center">
+                                    <div class="loader ease-linear rounded-full border-4 border-t-4 border-white h-12 w-12 mb-4 mx-auto"></div>
+                                    <p>Loading sizzle reels...</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -177,9 +187,14 @@
                                     <h3 id="resTitle" class="text-3xl font-bold text-slate-800"></h3>
                                     <span id="resTag" class="inline-block mt-2 text-xs font-bold px-3 py-1 bg-orange-100 text-orange-600 rounded-full uppercase"></span>
                                 </div>
-                                <button onclick="publishRecipe()" class="bg-green-500 text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition">
-                                    <i class="fa-solid fa-paper-plane mr-2"></i> Publish
-                                </button>
+                                <div class="flex gap-2">
+                                    <button onclick="showCreateSizzle()" class="bg-orange-500 text-white px-6 py-2 rounded-full font-bold hover:bg-orange-600 transition">
+                                        <i class="fa-solid fa-fire-flame-curved mr-2"></i> Create Sizzle
+                                    </button>
+                                    <button onclick="publishRecipe()" class="bg-green-500 text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition">
+                                        <i class="fa-solid fa-paper-plane mr-2"></i> Publish
+                                    </button>
+                                </div>
                             </div>
                             <div class="grid md:grid-cols-3 gap-8">
                                 <div class="md:col-span-1 bg-slate-50 p-6 rounded-2xl">
@@ -234,25 +249,32 @@
                 
                 <div class="p-6 space-y-6">
                     <div>
-                        <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Title *</label>
-                        <input id="sizzleTitle" type="text" placeholder="e.g. Spicy Thai Basil Stir Fry" 
-                               class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Description *</label>
-                        <textarea id="sizzleDescription" placeholder="Describe your amazing recipe..." 
-                                  class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none h-24"></textarea>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Cooking Style</label>
-                        <select id="sizzleStyle" class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
-                            <option value="Gourmet">Gourmet</option>
-                            <option value="Quick & Easy">Quick & Easy</option>
-                            <option value="Traditional">Traditional</option>
-                            <option value="Experimental">Experimental</option>
+                        <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Select Recipe *</label>
+                        <select id="sizzleRecipe" onchange="updateRecipeDetails()" 
+                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
+                            <option value="">Choose a recipe you've created...</option>
                         </select>
+                        <p class="text-xs text-slate-400 mt-1">Only recipes you've created in the Recipe Lab can be used for sizzles</p>
+                    </div>
+                    
+                    <div id="recipeDetails" class="hidden space-y-4">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Title</label>
+                            <input id="sizzleTitle" type="text" readonly 
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Description</label>
+                            <textarea id="sizzleDescription" readonly 
+                                      class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600 h-24"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Style</label>
+                            <input id="sizzleStyle" type="text" readonly 
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600">
+                        </div>
                     </div>
                     
                     <div>
@@ -589,6 +611,13 @@
 
         function showSection(sec) {
             const sections = ['feed', 'create', 'sizzle'];
+            const navIds = ['nav-feed', 'nav-create', 'nav-sizzle'];
+            
+            // Update navigation active state
+            navIds.forEach(id => document.getElementById(id).classList.remove('sidebar-active'));
+            if (document.getElementById(`nav-${sec}`)) {
+                document.getElementById(`nav-${sec}`).classList.add('sidebar-active');
+            }
             
             sections.forEach(s => {
                 const el = document.getElementById(`${s}-section`);
@@ -726,9 +755,9 @@
             showJamesAuthModal();
         }
 
-        // YouTube-style feed functions
+        // Reel-style feed functions
         async function loadSizzleFeed() {
-            const feed = document.getElementById('sizzleFeed');
+            const viewport = document.getElementById('reelsViewport');
             try {
                 const { data: recipes, error } = await supabaseClient
                     .from('recipes')
@@ -737,94 +766,149 @@
 
                 if (error) throw error;
 
-                feed.innerHTML = '';
+                viewport.innerHTML = '';
                 if (!recipes || recipes.length === 0) {
-                    feed.innerHTML = '<div class="text-center text-slate-400 py-8">No recipes yet. Be the first to create one!</div>';
+                    viewport.innerHTML = `
+                        <div class="h-full flex items-center justify-center text-white snap-start">
+                            <div class="text-center">
+                                <i class="fa-solid fa-video text-6xl mb-4 opacity-50"></i>
+                                <p class="text-xl">No sizzle reels yet</p>
+                                <p class="text-sm opacity-75 mt-2">Be the first to create one!</p>
+                            </div>
+                        </div>
+                    `;
                     return;
                 }
 
                 for (const recipe of recipes) {
-                    const card = await createSizzleCard(recipe);
-                    feed.appendChild(card);
+                    const reel = await createReelCard(recipe);
+                    viewport.appendChild(reel);
                 }
             } catch (err) {
-                console.error('Failed to load sizzle feed:', err);
-                feed.innerHTML = '<div class="text-center text-red-400 py-8">Failed to load recipes.</div>';
+                console.error('Failed to load sizzle reels:', err);
+                viewport.innerHTML = `
+                    <div class="h-full flex items-center justify-center text-white snap-start">
+                        <div class="text-center">
+                            <i class="fa-solid fa-exclamation-triangle text-6xl mb-4 text-red-400"></i>
+                            <p class="text-xl">Failed to load reels</p>
+                        </div>
+                    </div>
+                `;
             }
         }
 
-        async function createSizzleCard(recipe) {
+        async function createReelCard(recipe) {
             const div = document.createElement('div');
-            div.className = 'bg-white rounded-2xl shadow-lg overflow-hidden';
+            div.className = 'h-full w-full relative snap-start';
             
             const isLiked = await checkIfLiked(recipe.id);
             const isFavorited = await checkIfFavorited(recipe.id);
             const comments = await getComments(recipe.id);
             
             div.innerHTML = `
-                <div class="relative">
+                <!-- Video/Image Background -->
+                <div class="absolute inset-0 bg-black">
                     ${recipe.video_url ? 
-                        `<video src="${recipe.video_url}" class="w-full h-64 object-cover" loop muted autoplay playsinline></video>` :
+                        `<video src="${recipe.video_url}" 
+                                class="w-full h-full object-cover" 
+                                loop muted autoplay playsinline
+                                id="reel-video-${recipe.id}"></video>` :
                         `<img src="${recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop'}" 
-                             alt="${recipe.title}" class="w-full h-64 object-cover">`
+                             alt="${recipe.title}" 
+                             class="w-full h-full object-cover">`
                     }
-                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                        <h3 class="text-white font-bold text-lg mb-1">${recipe.title}</h3>
-                        <p class="text-white/80 text-sm">By ${recipe.author || 'Anonymous Chef'}</p>
-                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60"></div>
                 </div>
-                <div class="p-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2">
-                            <button onclick="handleSizzleLike('${recipe.id}', this)" 
-                                    class="flex items-center gap-1 px-3 py-1 rounded-full border ${isLiked ? 'bg-red-50 border-red-200 text-red-500' : 'border-slate-200 hover:border-red-200'} transition">
-                                <i class="fa-solid fa-heart ${isLiked ? 'text-red-500' : ''}"></i>
-                                <span class="text-sm">${recipe.likes || 0}</span>
-                            </button>
-                            <button onclick="toggleFavorite('${recipe.id}', this)" 
-                                    class="flex items-center gap-1 px-3 py-1 rounded-full border ${isFavorited ? 'bg-orange-50 border-orange-200 text-orange-500' : 'border-slate-200 hover:border-orange-200'} transition">
-                                <i class="fa-solid fa-bookmark ${isFavorited ? 'text-orange-500' : ''}"></i>
-                                <span class="text-sm">Save</span>
-                            </button>
-                            <button onclick="toggleComments('${recipe.id}')" 
-                                    class="flex items-center gap-1 px-3 py-1 rounded-full border border-slate-200 hover:border-slate-300 transition">
-                                <i class="fa-solid fa-comment"></i>
-                                <span class="text-sm">${comments.length}</span>
-                            </button>
+                
+                <!-- Content Overlay -->
+                <div class="absolute inset-0 flex flex-col justify-between p-6">
+                    <!-- Top Content -->
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="text-white text-2xl font-bold mb-2 drop-shadow-lg">${recipe.title}</h3>
+                            <p class="text-white/90 text-sm drop-shadow">By ${recipe.author || 'Anonymous Chef'}</p>
                         </div>
-                        <span class="text-xs font-bold px-2 py-1 bg-orange-100 text-orange-600 rounded-full">${recipe.style}</span>
+                        <span class="bg-orange-500 text-white text-xs px-3 py-1 rounded-full font-bold">${recipe.style}</span>
                     </div>
                     
-                    <div id="comments-${recipe.id}" class="hidden border-t pt-3 mt-3">
-                        <div class="space-y-2 mb-3" id="comments-list-${recipe.id}">
-                            ${comments.map(comment => `
-                                <div class="flex gap-2 text-sm">
-                                    <img src="https://ui-avatars.com/api/?name=User&background=orange&color=white" 
-                                         alt="User" class="w-6 h-6 rounded-full">
-                                    <div class="flex-1">
-                                        <p class="font-medium">User ${comment.user_id}</p>
-                                        <p class="text-slate-600">${comment.content}</p>
-                                    </div>
-                                </div>
-                            `).join('')}
+                    <!-- Bottom Actions -->
+                    <div class="flex justify-between items-end">
+                        <!-- Left Side - Description -->
+                        <div class="flex-1 mr-4">
+                            <p class="text-white/80 text-sm mb-4 line-clamp-3">
+                                ${recipe.ingredients?.slice(0, 2).join(', ') || 'Delicious recipe'}...
+                            </p>
                         </div>
-                        ${currentUser ? `
-                            <div class="flex gap-2">
-                                <img src="${currentUser.avatar}" alt="${currentUser.name}" class="w-6 h-6 rounded-full">
-                                <input type="text" 
-                                       placeholder="Add a comment..." 
-                                       class="flex-1 px-3 py-1 border rounded-full text-sm focus:outline-none focus:border-orange-400"
-                                       onkeypress="if(event.key==='Enter') addComment('${recipe.id}', this)">
-                            </div>
-                        ` : `
-                            <button onclick="showJamesAuthModal()" class="text-orange-500 text-sm hover:underline flex items-center gap-1">
-                                <i class="fa-solid fa-sign-in-alt"></i>
-                                Sign in to comment
+                        
+                        <!-- Right Side - Action Buttons -->
+                        <div class="flex flex-col gap-4">
+                            <button onclick="handleSizzleLike('${recipe.id}', this)" 
+                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
+                                <i class="fa-solid fa-heart ${isLiked ? 'text-red-500' : ''}"></i>
+                                <span class="block text-xs mt-1">${recipe.likes || 0}</span>
                             </button>
-                        `}
+                            
+                            <button onclick="toggleFavorite('${recipe.id}', this)" 
+                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
+                                <i class="fa-solid fa-bookmark ${isFavorited ? 'text-orange-500' : ''}"></i>
+                                <span class="block text-xs mt-1">Save</span>
+                            </button>
+                            
+                            <button onclick="toggleComments('${recipe.id}')" 
+                                    class="bg-white/20 backdrop-blur-sm text-white p-3 rounded-full hover:bg-white/30 transition">
+                                <i class="fa-solid fa-comment"></i>
+                                <span class="block text-xs mt-1">${comments.length}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Comments Section (Hidden by default) -->
+                <div id="comments-${recipe.id}" class="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-sm p-4 hidden">
+                    <div class="max-h-48 overflow-y-auto mb-3">
+                        ${comments.map(comment => `
+                            <div class="flex gap-2 text-white text-sm mb-2">
+                                <img src="https://ui-avatars.com/api/?name=User&background=orange&color=white" 
+                                     alt="User" class="w-6 h-6 rounded-full">
+                                <div>
+                                    <p class="font-medium">User ${comment.user_id}</p>
+                                    <p class="text-white/80">${comment.content}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${currentUser ? `
+                        <div class="flex gap-2">
+                            <img src="${currentUser.avatar}" alt="${currentUser.name}" class="w-6 h-6 rounded-full">
+                            <input type="text" 
+                                   placeholder="Add a comment..." 
+                                   class="flex-1 px-3 py-2 bg-white/20 text-white placeholder-white/60 rounded-full text-sm focus:outline-none focus:bg-white/30"
+                                   onkeypress="if(event.key==='Enter') addComment('${recipe.id}', this)">
+                        </div>
+                    ` : `
+                        <button onclick="showJamesAuthModal()" class="text-orange-400 text-sm hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-sign-in-alt"></i>
+                            Sign in to comment
+                        </button>
+                    `}
+                </div>
             `;
+            
+            // Auto-play video when reel becomes visible
+            if (recipe.video_url) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        const video = div.querySelector(`#reel-video-${recipe.id}`);
+                        if (entry.isIntersecting && video) {
+                            video.play().catch(e => console.log('Video play failed:', e));
+                        } else if (video) {
+                            video.pause();
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(div);
+            }
             
             return div;
         }
@@ -945,6 +1029,69 @@
                 modal.querySelector('.transform').classList.remove('scale-95');
                 modal.querySelector('.transform').classList.add('scale-100');
             }, 10);
+            loadUserRecipes();
+        }
+
+        function redirectToRecipeLab() {
+            showToast('Create a recipe first in the Recipe Lab, then you can create a sizzle from it!');
+            showSection('create');
+        }
+
+        async function loadUserRecipes() {
+            const select = document.getElementById('sizzleRecipe');
+            select.innerHTML = '<option value="">Choose a recipe you\'ve created...</option>';
+            
+            if (!currentUser) {
+                select.innerHTML = '<option value="">Please sign in to see your recipes</option>';
+                return;
+            }
+            
+            try {
+                // For now, we'll load all recipes as user recipes
+                // In a real app, you'd filter by user_id
+                const { data: recipes, error } = await supabaseClient
+                    .from('recipes')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                if (recipes && recipes.length > 0) {
+                    recipes.forEach(recipe => {
+                        const option = document.createElement('option');
+                        option.value = recipe.id;
+                        option.textContent = `${recipe.title} (${recipe.style})`;
+                        option.dataset.recipe = JSON.stringify(recipe);
+                        select.appendChild(option);
+                    });
+                } else {
+                    select.innerHTML = '<option value="">No recipes found. Create one in the Recipe Lab first!</option>';
+                }
+            } catch (err) {
+                console.error('Failed to load recipes:', err);
+                select.innerHTML = '<option value="">Failed to load recipes</option>';
+            }
+        }
+
+        function updateRecipeDetails() {
+            const select = document.getElementById('sizzleRecipe');
+            const detailsDiv = document.getElementById('recipeDetails');
+            
+            if (select.value) {
+                const option = select.querySelector(`option[value="${select.value}"]`);
+                const recipe = JSON.parse(option.dataset.recipe);
+                
+                document.getElementById('sizzleTitle').value = recipe.title;
+                document.getElementById('sizzleDescription').value = `${recipe.ingredients?.join(', ') || 'Ingredients'}\n\n${recipe.instructions?.join('\n') || 'Instructions'}`;
+                document.getElementById('sizzleStyle').value = recipe.style;
+                
+                detailsDiv.classList.remove('hidden');
+            } else {
+                detailsDiv.classList.add('hidden');
+                document.getElementById('sizzleTitle').value = '';
+                document.getElementById('sizzleDescription').value = '';
+                document.getElementById('sizzleStyle').value = '';
+            }
         }
 
         function closeCreateSizzleModal() {
@@ -1000,15 +1147,14 @@
         }
 
         async function createSizzleRecipe() {
+            const recipeSelect = document.getElementById('sizzleRecipe');
             const title = document.getElementById('sizzleTitle').value;
-            const description = document.getElementById('sizzleDescription').value;
-            const style = document.getElementById('sizzleStyle').value;
             const imageUrl = document.getElementById('sizzleImage').value;
             const videoUrl = document.getElementById('sizzleVideoUrl').value;
             const uploadedVideo = document.getElementById('uploadedVideo');
             
-            if (!title || !description) {
-                showToast('Please fill in all required fields');
+            if (!recipeSelect.value) {
+                showToast('Please select a recipe');
                 return;
             }
             
@@ -1027,25 +1173,30 @@
                     showToast('Video upload simulated (using demo video)');
                 }
                 
+                // Get the original recipe data
+                const option = recipeSelect.querySelector(`option[value="${recipeSelect.value}"]`);
+                const originalRecipe = JSON.parse(option.dataset.recipe);
+                
+                // Create sizzle based on selected recipe
                 const { error } = await supabaseClient.from('recipes').insert([{
-                    title,
-                    author: 'Guest Chef',
-                    style,
+                    title: originalRecipe.title,
+                    author: originalRecipe.author,
+                    style: originalRecipe.style,
                     likes: 0,
-                    img: imageUrl || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop',
+                    img: imageUrl || originalRecipe.img,
                     video_url: finalVideoUrl,
-                    ingredients: ['Custom ingredients'],
-                    instructions: ['Custom instructions']
+                    ingredients: originalRecipe.ingredients,
+                    instructions: originalRecipe.instructions
                 }]);
                 
                 if (error) throw error;
                 
                 closeCreateSizzleModal();
                 loadSizzleFeed();
-                showToast('Sizzle recipe created successfully!');
+                showToast('Sizzle created successfully!');
             } catch (err) {
                 console.error('Failed to create sizzle:', err);
-                showToast('Failed to create sizzle recipe');
+                showToast('Failed to create sizzle');
             }
         }
 
