@@ -121,7 +121,7 @@
                         <div class="absolute top-0 left-0 right-0 z-20 p-4 bg-gradient-to-b from-black/50 to-transparent">
                             <div class="flex justify-between items-center">
                                 <h2 class="text-white text-xl font-bold">Sizzle Reels</h2>
-                                <button onclick="redirectToRecipeLab()" class="bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
+                                <button onclick="showCreateSizzle()" class="bg-orange-500 text-white px-4 py-2 rounded-full font-semibold hover:bg-orange-600 transition">
                                     <i class="fa-solid fa-plus mr-2"></i>Create Sizzle
                                 </button>
                             </div>
@@ -176,10 +176,45 @@
                         </h2>
                         <div class="space-y-6">
                             <div>
-                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">What are you craving?</label>
-                                <input id="promptInput" type="text" placeholder="e.g. A spicy vegan pasta with summer vegetables" 
-                                       class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
+                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Creation Method</label>
+                                <div class="flex gap-2">
+                                    <button onclick="setRecipeCreationMode('ai')" id="aiModeBtn" class="flex-1 px-4 py-2 rounded-lg border-2 border-orange-500 bg-orange-50 text-orange-600 font-medium transition">
+                                        <i class="fa-solid fa-magic mr-2"></i>AI Generate
+                                    </button>
+                                    <button onclick="setRecipeCreationMode('manual')" id="manualModeBtn" class="flex-1 px-4 py-2 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-slate-300 transition">
+                                        <i class="fa-solid fa-pen mr-2"></i>Create Manually
+                                    </button>
+                                </div>
                             </div>
+                            
+                            <!-- AI Generation Section -->
+                            <div id="aiCreationSection">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">What are you craving?</label>
+                                    <input id="promptInput" type="text" placeholder="e.g. A spicy vegan pasta with summer vegetables" 
+                                           class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
+                                </div>
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Dietary Requirements</label>
+                                <select id="dietaryRequirements" class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
+                                    <option value="No Dietary Requirements">No Dietary Requirements</option>
+                                    <option value="Vegan">Vegan</option>
+                                    <option value="Vegetarian">Vegetarian</option>
+                                    <option value="Gluten-Free">Gluten-Free</option>
+                                    <option value="Dairy-Free">Dairy-Free</option>
+                                    <option value="Nut-Free">Nut-Free</option>
+                                    <option value="Kosher">Kosher</option>
+                                    <option value="Halal">Halal</option>
+                                    <option value="Low-Sodium">Low-Sodium</option>
+                                    <option value="Sugar-Free">Sugar-Free</option>
+                                    <option value="Pescatarian">Pescatarian</option>
+                                    <option value="Paleo">Paleo</option>
+                                    <option value="Keto">Keto</option>
+                                </select>
+                                <p class="text-xs text-slate-400 mt-1">Your dietary preferences will be saved for future recipes</p>
+                            </div>
+                            
                             <div>
                                 <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Cooking Style *</label>
                                 
@@ -286,8 +321,74 @@
                                 </div>
                             </div>
                             <button id="generateBtn" onclick="generateRecipe()" class="w-full bg-orange-500 text-white py-5 rounded-2xl font-bold text-xl hover:bg-orange-600 transition-all active:scale-[0.98]">
-                                ✨ Generate Magic Recipe
+                                â¨ Generate Magic Recipe
                             </button>
+                            </div>
+                            
+                            <!-- Manual Creation Section (Hidden by default) -->
+                            <div id="manualCreationSection" class="hidden space-y-6">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Title *</label>
+                                    <input id="manualTitle" type="text" placeholder="e.g. Spicy Thai Basil Stir Fry" 
+                                           class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Cooking Style *</label>
+                                    <select id="manualStyle" class="w-full px-6 py-4 rounded-2xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none text-lg">
+                                        <option value="">Select a style...</option>
+                                        <option value="Gourmet">Gourmet</option>
+                                        <option value="Quick & Easy">Quick & Easy</option>
+                                        <option value="Traditional">Traditional</option>
+                                        <option value="Experimental">Experimental</option>
+                                        <option value="Vegan">Vegan</option>
+                                        <option value="Mediterranean">Mediterranean</option>
+                                        <option value="Asian Fusion">Asian Fusion</option>
+                                        <option value="Comfort Food">Comfort Food</option>
+                                        <option value="Healthy">Healthy</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Ingredients *</label>
+                                    <div id="ingredientsList" class="space-y-2">
+                                        <div class="flex gap-2">
+                                            <input type="text" placeholder="e.g. 2 cups flour" 
+                                                   class="flex-1 px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none ingredient-input">
+                                            <button onclick="removeIngredient(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button onclick="addIngredientField()" class="mt-2 text-orange-500 text-sm hover:underline flex items-center gap-1">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Ingredient
+                                    </button>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Instructions *</label>
+                                    <div id="instructionsList" class="space-y-2">
+                                        <div class="flex gap-2">
+                                            <div class="flex-1">
+                                                <input type="text" placeholder="e.g. Preheat oven to 350Â°F" 
+                                                       class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none instruction-input">
+                                            </div>
+                                            <button onclick="removeInstruction(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <button onclick="addInstructionField()" class="mt-2 text-orange-500 text-sm hover:underline flex items-center gap-1">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Step
+                                    </button>
+                                </div>
+                                
+                                <button onclick="saveManualRecipe()" class="w-full bg-green-500 text-white py-5 rounded-2xl font-bold text-xl hover:bg-green-600 transition-all active:scale-[0.98]">
+                                    <i class="fa-solid fa-save mr-2"></i> Save Recipe
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -336,32 +437,55 @@
                 </div>
                 
                 <div class="p-6 space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Select Recipe *</label>
-                        <select id="sizzleRecipe" onchange="updateRecipeDetails()" 
-                                class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
-                            <option value="">Choose a recipe you've created...</option>
-                        </select>
-                        <p class="text-xs text-slate-400 mt-1">Only recipes you've created in the Recipe Lab can be used for sizzles</p>
-                    </div>
-                    
-                    <div id="recipeDetails" class="hidden space-y-4">
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Recipe Title</label>
-                            <input id="sizzleTitle" type="text" readonly 
-                                   class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600">
+                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Create From</label>
+                            <div class="flex gap-2">
+                                <button onclick="setCreateMode('manual')" id="manualModeBtn" class="flex-1 px-4 py-2 rounded-lg border-2 border-orange-500 bg-orange-50 text-orange-600 font-medium transition">
+                                    <i class="fa-solid fa-pen mr-2"></i>Create New
+                                </button>
+                                <button onclick="setCreateMode('recipe')" id="recipeModeBtn" class="flex-1 px-4 py-2 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-slate-300 transition">
+                                    <i class="fa-solid fa-book mr-2"></i>From Recipe
+                                </button>
+                            </div>
                         </div>
                         
-                        <div>
-                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Description</label>
-                            <textarea id="sizzleDescription" readonly 
-                                      class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600 h-24"></textarea>
+                        <!-- Recipe Selection (Hidden by default) -->
+                        <div id="recipeSelection" class="hidden">
+                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Select Recipe</label>
+                            <select id="sizzleRecipe" onchange="updateRecipeDetails()" 
+                                    class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
+                                <option value="">Choose a recipe you've created...</option>
+                            </select>
                         </div>
                         
-                        <div>
-                            <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Style</label>
-                            <input id="sizzleStyle" type="text" readonly 
-                                   class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 text-slate-600">
+                        <!-- Manual Creation Fields -->
+                        <div id="manualCreation" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Sizzle Title *</label>
+                                <input id="sizzleTitle" type="text" placeholder="Give your sizzle a catchy title..." 
+                                       class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Description *</label>
+                                <textarea id="sizzleDescription" placeholder="Describe what makes this sizzle special..." 
+                                          class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none h-24"></textarea>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">Cooking Style</label>
+                                <select id="sizzleStyle" class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none">
+                                    <option value="Quick & Easy">Quick & Easy</option>
+                                    <option value="Gourmet">Gourmet</option>
+                                    <option value="Comfort Food">Comfort Food</option>
+                                    <option value="Healthy">Healthy</option>
+                                    <option value="Traditional">Traditional</option>
+                                    <option value="Experimental">Experimental</option>
+                                    <option value="Vegan">Vegan</option>
+                                    <option value="Asian Fusion">Asian Fusion</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     
@@ -523,6 +647,107 @@
         </div>
     </div>
 
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[95] hidden opacity-0 transition-opacity">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full transform scale-95 transition-transform">
+                <div class="p-6 border-b border-slate-200">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-2xl font-bold">User Profile</h3>
+                        <button onclick="closeUserProfileModal()" class="text-slate-400 hover:text-slate-600 transition">
+                            <i class="fa-solid fa-times text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center gap-4 mb-6">
+                        <img id="profileAvatar" src="" alt="Profile" class="w-20 h-20 rounded-full">
+                        <div>
+                            <h4 id="profileName" class="text-xl font-bold"></h4>
+                            <p id="profileEmail" class="text-slate-600"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center p-4 bg-slate-50 rounded-xl">
+                            <div id="profileRecipesCount" class="text-2xl font-bold text-orange-500">0</div>
+                            <div class="text-sm text-slate-600">Recipes</div>
+                        </div>
+                        <div class="text-center p-4 bg-slate-50 rounded-xl">
+                            <div id="profileFavoritesCount" class="text-2xl font-bold text-red-500">0</div>
+                            <div class="text-sm text-slate-600">Favorites</div>
+                        </div>
+                        <div class="text-center p-4 bg-slate-50 rounded-xl">
+                            <div id="profileLikesCount" class="text-2xl font-bold text-blue-500">0</div>
+                            <div class="text-sm text-slate-600">Total Likes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button onclick="showSection('my-kitchen'); closeUserProfileModal();" class="flex-1 bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600 transition">
+                            <i class="fa-solid fa-utensils mr-2"></i>My Kitchen
+                        </button>
+                        <button onclick="showSection('favorites'); closeUserProfileModal();" class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition">
+                            <i class="fa-solid fa-heart mr-2"></i>Favorites
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipeDetailModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[95] hidden opacity-0 transition-opacity">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto transform scale-95 transition-transform">
+                <div class="relative h-64 w-full bg-slate-200">
+                    <img id="detailImage" src="" alt="Recipe" class="w-full h-full object-cover">
+                    <div class="absolute top-4 right-4">
+                        <button onclick="closeRecipeDetailModal()" class="bg-white/90 backdrop-blur-sm text-slate-700 p-2 rounded-full hover:bg-white transition">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
+                        <h3 id="detailTitle" class="text-white text-2xl font-bold"></h3>
+                        <p id="detailAuthor" class="text-white/90"></p>
+                    </div>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <span id="detailStyle" class="bg-orange-100 text-orange-600 px-3 py-1 rounded-full text-sm font-bold"></span>
+                            <div class="flex items-center gap-2 text-slate-600">
+                                <i class="fa-solid fa-heart text-red-500"></i>
+                                <span id="detailLikes">0</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="detailLikeBtn" class="px-4 py-2 rounded-lg border border-slate-200 hover:border-red-200 hover:bg-red-50 transition">
+                                <i class="fa-solid fa-heart"></i> Like
+                            </button>
+                            <button id="detailFavoriteBtn" class="px-4 py-2 rounded-lg border border-slate-200 hover:border-orange-200 hover:bg-orange-50 transition">
+                                <i class="fa-solid fa-bookmark"></i> Save
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-3 gap-8">
+                        <div class="md:col-span-1 bg-slate-50 p-6 rounded-2xl">
+                            <h4 class="font-bold text-orange-600 mb-4 uppercase tracking-widest text-xs">Ingredients</h4>
+                            <ul id="detailIngredients" class="space-y-2 text-slate-700 text-sm"></ul>
+                        </div>
+                        <div class="md:col-span-2">
+                            <h4 class="font-bold text-orange-600 mb-4 uppercase tracking-widest text-xs">Instructions</h4>
+                            <ol id="detailInstructions" class="space-y-4 text-slate-700 text-sm"></ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         let apiKey = "";
         const SUPABASE_URL = "https://ojvigxnwweixjhugekmm.supabase.co";
@@ -631,6 +856,224 @@
             }
         }
 
+        function setRecipeCreationMode(mode) {
+            const aiBtn = document.getElementById('aiModeBtn');
+            const manualBtn = document.getElementById('manualModeBtn');
+            const aiSection = document.getElementById('aiCreationSection');
+            const manualSection = document.getElementById('manualCreationSection');
+            
+            if (mode === 'ai') {
+                // Update button styles
+                aiBtn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                aiBtn.classList.remove('border-slate-200', 'text-slate-600');
+                manualBtn.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                manualBtn.classList.add('border-slate-200', 'text-slate-600');
+                
+                // Show/hide sections
+                aiSection.classList.remove('hidden');
+                manualSection.classList.add('hidden');
+            } else {
+                // Update button styles
+                manualBtn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                manualBtn.classList.remove('border-slate-200', 'text-slate-600');
+                aiBtn.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                aiBtn.classList.add('border-slate-200', 'text-slate-600');
+                
+                // Show/hide sections
+                aiSection.classList.add('hidden');
+                manualSection.classList.remove('hidden');
+            }
+        }
+
+        function addIngredientField() {
+            const ingredientsList = document.getElementById('ingredientsList');
+            const newField = document.createElement('div');
+            newField.className = 'flex gap-2';
+            newField.innerHTML = `
+                <input type="text" placeholder="e.g. 1 cup sugar" 
+                       class="flex-1 px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none ingredient-input">
+                <button onclick="removeIngredient(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            ingredientsList.appendChild(newField);
+        }
+
+        function removeIngredient(button) {
+            const ingredientsList = document.getElementById('ingredientsList');
+            if (ingredientsList.children.length > 1) {
+                button.parentElement.remove();
+            } else {
+                showToast('You must have at least one ingredient');
+            }
+        }
+
+        function addInstructionField() {
+            const instructionsList = document.getElementById('instructionsList');
+            const newField = document.createElement('div');
+            newField.className = 'flex gap-2';
+            newField.innerHTML = `
+                <div class="flex-1">
+                    <input type="text" placeholder="e.g. Mix ingredients together" 
+                           class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none instruction-input">
+                </div>
+                <button onclick="removeInstruction(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            `;
+            instructionsList.appendChild(newField);
+        }
+
+        function removeInstruction(button) {
+            const instructionsList = document.getElementById('instructionsList');
+            if (instructionsList.children.length > 1) {
+                button.parentElement.remove();
+            } else {
+                showToast('You must have at least one instruction');
+            }
+        }
+
+        async function saveDietaryPreferences() {
+            if (!currentUser) return;
+            
+            const dietaryRequirements = document.getElementById('dietaryRequirements').value;
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('user_preferences')
+                    .upsert({
+                        user_id: currentUser.user_id,
+                        dietary_requirements: dietaryRequirements,
+                        updated_at: new Date().toISOString()
+                    }, {
+                        onConflict: 'user_id'
+                    });
+                
+                if (error) throw error;
+                console.log('Dietary preferences saved');
+            } catch (err) {
+                console.error('Failed to save dietary preferences:', err);
+            }
+        }
+
+        async function loadDietaryPreferences() {
+            if (!currentUser) return;
+            
+            try {
+                const { data: preferences, error } = await supabaseClient
+                    .from('user_preferences')
+                    .select('dietary_requirements')
+                    .eq('user_id', currentUser.user_id)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') {
+                    throw error;
+                }
+                
+                const dietarySelect = document.getElementById('dietaryRequirements');
+                if (preferences && preferences.dietary_requirements) {
+                    dietarySelect.value = preferences.dietary_requirements;
+                } else {
+                    dietarySelect.value = 'No Dietary Requirements';
+                }
+            } catch (err) {
+                console.error('Failed to load dietary preferences:', err);
+                // Set default on error
+                document.getElementById('dietaryRequirements').value = 'No Dietary Requirements';
+            }
+        }
+
+        // Add change listener to dietary requirements dropdown
+        document.addEventListener('DOMContentLoaded', () => {
+            const dietarySelect = document.getElementById('dietaryRequirements');
+            if (dietarySelect) {
+                dietarySelect.addEventListener('change', saveDietaryPreferences);
+            }
+        });
+
+        async function saveManualRecipe() {
+            if (!currentUser) {
+                showErrorModal('Authentication Required', 'Please sign in to create recipes.');
+                showJamesAuthModal();
+                return;
+            }
+            
+            const title = document.getElementById('manualTitle').value;
+            const style = document.getElementById('manualStyle').value;
+            const ingredientInputs = document.querySelectorAll('.ingredient-input');
+            const instructionInputs = document.querySelectorAll('.instruction-input');
+            
+            // Validation
+            if (!title || !style) {
+                showToast('Please fill in all required fields');
+                return;
+            }
+            
+            const ingredients = Array.from(ingredientInputs)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
+            
+            const instructions = Array.from(instructionInputs)
+                .map(input => input.value.trim())
+                .filter(value => value !== '');
+            
+            if (ingredients.length === 0 || instructions.length === 0) {
+                showToast('Please add at least one ingredient and one instruction');
+                return;
+            }
+            
+            try {
+                const recipeData = {
+                    title,
+                    author: currentUser.name,
+                    style,
+                    likes: 0,
+                    img: 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop',
+                    ingredients,
+                    instructions,
+                    user_id: currentUser.user_id
+                };
+                
+                const { error } = await supabaseClient.from('recipes').insert([recipeData]);
+                
+                if (error) throw error;
+                
+                // Clear form
+                document.getElementById('manualTitle').value = '';
+                document.getElementById('manualStyle').value = '';
+                document.getElementById('ingredientsList').innerHTML = `
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="e.g. 2 cups flour" 
+                               class="flex-1 px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none ingredient-input">
+                        <button onclick="removeIngredient(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                document.getElementById('instructionsList').innerHTML = `
+                    <div class="flex gap-2">
+                        <div class="flex-1">
+                            <input type="text" placeholder="e.g. Preheat oven to 350Â°F" 
+                                   class="w-full px-4 py-3 rounded-xl border-2 border-slate-100 focus:border-orange-400 focus:outline-none instruction-input">
+                        </div>
+                        <button onclick="removeInstruction(this)" class="px-3 py-2 bg-red-100 text-red-600 rounded-xl hover:bg-red-200 transition">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                showToast('Recipe created successfully!');
+                
+                // Navigate to My Kitchen after a short delay
+                setTimeout(() => {
+                    showSection('my-kitchen');
+                }, 1500);
+            } catch (err) {
+                console.error('Failed to create recipe:', err);
+                showToast('Failed to create recipe');
+            }
+        }
+
         async function callGemini(prompt, systemInstruction) {
             let retryCount = 0;
             const maxRetries = 1; // Only retry once as requested
@@ -731,6 +1174,8 @@
             }
             
             const prompt = document.getElementById('promptInput').value;
+            const dietaryRequirements = document.getElementById('dietaryRequirements').value;
+            
             if (!prompt) {
                 showToast("Tell us what you're craving first!");
                 return;
@@ -754,15 +1199,22 @@
             loadingText.textContent = "Gemini is brainstorming ingredients...";
             
             try {
+                // Include dietary requirements in the prompt if not default
+                let enhancedPrompt = prompt;
+                if (dietaryRequirements !== 'No Dietary Requirements') {
+                    enhancedPrompt = `${prompt}. Please ensure this recipe is suitable for someone with ${dietaryRequirements} dietary requirements.`;
+                }
+                
                 const systemPrompt = `You are a world-class chef. Generate a detailed recipe in JSON format. Schema: { "title": string, "ingredients": string[], "instructions": string[] }. Focus on the style: ${selectedStyle}. Be creative and specific with ingredients and cooking techniques.`;
-                const recipe = await callGemini(prompt, systemPrompt);
+                const recipe = await callGemini(enhancedPrompt, systemPrompt);
                 currentRecipe = { 
                     ...recipe, 
                     author: currentUser.name, 
                     style: selectedStyle, 
                     likes: 0, 
                     img: "",
-                    user_id: currentUser.user_id
+                    user_id: currentUser.user_id,
+                    dietary_requirements: dietaryRequirements
                 };
                 
                 // Show recipe result modal
@@ -976,20 +1428,20 @@
                             <i class="fa-solid fa-chevron-down text-xs text-slate-400"></i>
                         </div>
                         <div class="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-slate-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <button onclick="showUserMenu()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition flex items-center gap-2">
+                            <button onclick="showUserMenu()" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition flex items-center gap-2">
                                 <i class="fa-solid fa-user text-slate-400"></i>
                                 Profile
                             </button>
-                            <button onclick="showMyKitchen()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition flex items-center gap-2">
+                            <button onclick="showMyKitchen()" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition flex items-center gap-2">
                                 <i class="fa-solid fa-utensils text-slate-400"></i>
                                 My Kitchen
                             </button>
-                            <button onclick="showFavorites()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition flex items-center gap-2">
+                            <button onclick="showFavorites()" class="w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition flex items-center gap-2">
                                 <i class="fa-solid fa-heart text-slate-400"></i>
                                 Favorites
                             </button>
                             <div class="border-t border-slate-200 my-1"></div>
-                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm hover:bg-slate-50 transition flex items-center gap-2 text-red-500">
+                            <button onclick="logout()" class="w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-slate-50 transition flex items-center gap-2">
                                 <i class="fa-solid fa-sign-out-alt"></i>
                                 Logout
                             </button>
@@ -1019,7 +1471,22 @@
         }
 
         function showUserMenu() {
-            showToast('User profile coming soon!');
+            showUserProfile();
+        }
+
+        function showUserProfile() {
+            const modal = document.getElementById('userProfileModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.transform').classList.remove('scale-95');
+                    modal.querySelector('.transform').classList.add('scale-100');
+                }, 10);
+            } else {
+                // Create user profile modal if it doesn't exist
+                createUserProfileModal();
+            }
         }
 
         function showJamesAuthModal() {
@@ -1066,6 +1533,7 @@
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
                 updateAuthUI();
+                loadDietaryPreferences(); // Load user's dietary preferences
             } else {
                 currentUser = null;
                 updateAuthUI();
@@ -1227,7 +1695,196 @@
         }
 
         function viewRecipe(recipeId) {
-            showToast('Recipe viewer coming soon!');
+            showRecipeDetail(recipeId);
+        }
+
+        async function showRecipeDetail(recipeId) {
+            try {
+                const { data: recipe, error } = await supabaseClient
+                    .from('recipes')
+                    .select('*')
+                    .eq('id', recipeId)
+                    .single();
+
+                if (error) throw error;
+
+                const modal = document.getElementById('recipeDetailModal');
+                if (modal) {
+                    populateRecipeDetail(recipe);
+                    modal.classList.remove('hidden');
+                    setTimeout(() => {
+                        modal.classList.remove('opacity-0');
+                        modal.querySelector('.transform').classList.remove('scale-95');
+                        modal.querySelector('.transform').classList.add('scale-100');
+                    }, 10);
+                } else {
+                    createRecipeDetailModal(recipe);
+                }
+            } catch (err) {
+                console.error('Failed to load recipe:', err);
+                showToast('Failed to load recipe');
+            }
+        }
+
+        function populateRecipeDetail(recipe) {
+            document.getElementById('detailTitle').innerText = recipe.title;
+            document.getElementById('detailAuthor').innerText = `By ${recipe.author}`;
+            document.getElementById('detailStyle').innerText = recipe.style;
+            document.getElementById('detailImage').src = recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
+            document.getElementById('detailLikes').innerText = recipe.likes || 0;
+            
+            const ingredientsList = document.getElementById('detailIngredients');
+            ingredientsList.innerHTML = recipe.ingredients.map(ing => `<li class="py-1">â¢ ${ing}</li>`).join('');
+            
+            const instructionsList = document.getElementById('detailInstructions');
+            instructionsList.innerHTML = recipe.instructions.map((step, idx) => `
+                <li class="flex gap-3 py-2">
+                    <span class="w-6 h-6 shrink-0 flex items-center justify-center bg-orange-100 text-orange-600 font-bold rounded-full text-[10px]">${idx + 1}</span>
+                    <p>${step}</p>
+                </li>
+            `).join('');
+
+            // Set up action buttons
+            const likeBtn = document.getElementById('detailLikeBtn');
+            const favoriteBtn = document.getElementById('detailFavoriteBtn');
+            
+            likeBtn.onclick = () => handleRecipeLike(recipeId, likeBtn);
+            favoriteBtn.onclick = () => handleRecipeFavorite(recipeId, favoriteBtn);
+            
+            // Check current state
+            checkRecipeInteractions(recipeId, likeBtn, favoriteBtn);
+        }
+
+        async function checkRecipeInteractions(recipeId, likeBtn, favoriteBtn) {
+            if (!currentUser) return;
+            
+            try {
+                // Check if favorited
+                const { data: favorite } = await supabaseClient
+                    .from('favorites')
+                    .select('id')
+                    .eq('user_id', currentUser.user_id)
+                    .eq('recipe_id', recipeId)
+                    .single();
+                
+                if (favorite) {
+                    favoriteBtn.classList.add('text-orange-500');
+                    favoriteBtn.querySelector('i').classList.add('text-orange-500');
+                }
+            } catch (e) {
+                // Not favorited
+            }
+        }
+
+        async function handleRecipeLike(recipeId, button) {
+            if (!currentUser) {
+                showJamesAuthModal();
+                return;
+            }
+            
+            try {
+                const { data: current } = await supabaseClient.from('recipes').select('likes').eq('id', recipeId).single();
+                const newLikes = (current.likes || 0) + 1;
+                await supabaseClient.from('recipes').update({ likes: newLikes }).eq('id', recipeId);
+                
+                document.getElementById('detailLikes').innerText = newLikes;
+                button.classList.add('text-red-500', 'bg-red-50');
+                button.querySelector('i').classList.add('text-red-500');
+                showToast('Recipe liked!');
+            } catch (e) {
+                console.error('Failed to like recipe:', e);
+            }
+        }
+
+        async function handleRecipeFavorite(recipeId, button) {
+            if (!currentUser) {
+                showJamesAuthModal();
+                return;
+            }
+            
+            try {
+                const isFavorited = await checkIfFavorited(recipeId);
+                
+                if (isFavorited) {
+                    await supabaseClient.from('favorites').delete().eq('user_id', currentUser.user_id).eq('recipe_id', recipeId);
+                    button.classList.remove('text-orange-500');
+                    button.querySelector('i').classList.remove('text-orange-500');
+                    showToast('Recipe removed from favorites!');
+                } else {
+                    await supabaseClient.from('favorites').insert({ user_id: currentUser.user_id, recipe_id });
+                    button.classList.add('text-orange-500');
+                    button.querySelector('i').classList.add('text-orange-500');
+                    showToast('Recipe added to favorites!');
+                }
+            } catch (e) {
+                console.error('Failed to toggle favorite:', e);
+            }
+        }
+
+        function closeUserProfileModal() {
+            const modal = document.getElementById('userProfileModal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('.transform').classList.remove('scale-100');
+            modal.querySelector('.transform').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function closeRecipeDetailModal() {
+            const modal = document.getElementById('recipeDetailModal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('.transform').classList.remove('scale-100');
+            modal.querySelector('.transform').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        async function loadUserProfile() {
+            if (!currentUser) return;
+            
+            try {
+                // Load user stats
+                const { data: recipes } = await supabaseClient
+                    .from('recipes')
+                    .select('likes')
+                    .eq('user_id', currentUser.user_id);
+                
+                const { data: favorites } = await supabaseClient
+                    .from('favorites')
+                    .select('id')
+                    .eq('user_id', currentUser.user_id);
+                
+                const totalLikes = recipes?.reduce((sum, r) => sum + (r.likes || 0), 0) || 0;
+                
+                // Update profile modal
+                document.getElementById('profileAvatar').src = currentUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=orange&color=white`;
+                document.getElementById('profileName').innerText = currentUser.name;
+                document.getElementById('profileEmail').innerText = currentUser.email || 'No email provided';
+                document.getElementById('profileRecipesCount').innerText = recipes?.length || 0;
+                document.getElementById('profileFavoritesCount').innerText = favorites?.length || 0;
+                document.getElementById('profileLikesCount').innerText = totalLikes;
+            } catch (err) {
+                console.error('Failed to load profile:', err);
+            }
+        }
+
+        // Update showUserProfile to load data
+        function showUserProfile() {
+            const modal = document.getElementById('userProfileModal');
+            if (modal) {
+                loadUserProfile();
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.transform').classList.remove('scale-95');
+                    modal.querySelector('.transform').classList.add('scale-100');
+                }, 10);
+            } else {
+                // Create user profile modal if it doesn't exist
+                createUserProfileModal();
+            }
         }
 
         // Reel-style feed functions
@@ -1544,7 +2201,47 @@
                 modal.querySelector('.transform').classList.remove('scale-95');
                 modal.querySelector('.transform').classList.add('scale-100');
             }, 10);
+            
+            // Default to manual mode
+            setCreateMode('manual');
             loadUserRecipes();
+        }
+
+        function setCreateMode(mode) {
+            const manualBtn = document.getElementById('manualModeBtn');
+            const recipeBtn = document.getElementById('recipeModeBtn');
+            const manualCreation = document.getElementById('manualCreation');
+            const recipeSelection = document.getElementById('recipeSelection');
+            
+            if (mode === 'manual') {
+                // Update button styles
+                manualBtn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                manualBtn.classList.remove('border-slate-200', 'text-slate-600');
+                recipeBtn.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                recipeBtn.classList.add('border-slate-200', 'text-slate-600');
+                
+                // Show/hide sections
+                manualCreation.classList.remove('hidden');
+                recipeSelection.classList.add('hidden');
+                
+                // Clear recipe selection
+                document.getElementById('sizzleRecipe').value = '';
+            } else {
+                // Update button styles
+                recipeBtn.classList.add('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                recipeBtn.classList.remove('border-slate-200', 'text-slate-600');
+                manualBtn.classList.remove('border-orange-500', 'bg-orange-50', 'text-orange-600');
+                manualBtn.classList.add('border-slate-200', 'text-slate-600');
+                
+                // Show/hide sections
+                manualCreation.classList.add('hidden');
+                recipeSelection.classList.remove('hidden');
+                
+                // Clear manual fields
+                document.getElementById('sizzleTitle').value = '';
+                document.getElementById('sizzleDescription').value = '';
+                document.getElementById('sizzleStyle').value = 'Quick & Easy';
+            }
         }
 
         function redirectToRecipeLab() {
@@ -1663,16 +2360,32 @@
 
         async function createSizzleRecipe() {
             const recipeSelect = document.getElementById('sizzleRecipe');
+            const manualCreation = document.getElementById('manualCreation');
             const title = document.getElementById('sizzleTitle').value;
+            const description = document.getElementById('sizzleDescription').value;
+            const style = document.getElementById('sizzleStyle').value;
             const imageUrl = document.getElementById('sizzleImage').value;
             const videoUrl = document.getElementById('sizzleVideoUrl').value;
             const uploadedVideo = document.getElementById('uploadedVideo');
             
-            if (!recipeSelect.value) {
+            // Check if manual mode is active
+            const isManualMode = !manualCreation.classList.contains('hidden');
+            
+            // Validation for manual mode
+            if (isManualMode) {
+                if (!title || !description) {
+                    showToast('Please fill in all required fields');
+                    return;
+                }
+            }
+            
+            // Validation for recipe mode
+            if (!isManualMode && !recipeSelect.value) {
                 showToast('Please select a recipe');
                 return;
             }
             
+            // Video validation
             if (!videoUrl && !uploadedVideo.dataset.file) {
                 showToast('Please upload a video or provide a video URL');
                 return;
@@ -1688,21 +2401,40 @@
                     showToast('Video upload simulated (using demo video)');
                 }
                 
-                // Get the original recipe data
-                const option = recipeSelect.querySelector(`option[value="${recipeSelect.value}"]`);
-                const originalRecipe = JSON.parse(option.dataset.recipe);
+                let sizzleData;
                 
-                // Create sizzle based on selected recipe
-                const { error } = await supabaseClient.from('recipes').insert([{
-                    title: originalRecipe.title,
-                    author: originalRecipe.author,
-                    style: originalRecipe.style,
-                    likes: 0,
-                    img: imageUrl || originalRecipe.img,
-                    video_url: finalVideoUrl,
-                    ingredients: originalRecipe.ingredients,
-                    instructions: originalRecipe.instructions
-                }]);
+                if (isManualMode) {
+                    // Manual creation
+                    sizzleData = {
+                        title,
+                        author: currentUser.name,
+                        style,
+                        likes: 0,
+                        img: imageUrl || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop',
+                        video_url: finalVideoUrl,
+                        ingredients: [description], // Store description as ingredient for simplicity
+                        instructions: ['Watch the video to see how to make this sizzle!'],
+                        user_id: currentUser.user_id
+                    };
+                } else {
+                    // Recipe-based creation
+                    const option = recipeSelect.querySelector(`option[value="${recipeSelect.value}"]`);
+                    const originalRecipe = JSON.parse(option.dataset.recipe);
+                    
+                    sizzleData = {
+                        title: originalRecipe.title,
+                        author: originalRecipe.author,
+                        style: originalRecipe.style,
+                        likes: 0,
+                        img: imageUrl || originalRecipe.img,
+                        video_url: finalVideoUrl,
+                        ingredients: originalRecipe.ingredients,
+                        instructions: originalRecipe.instructions,
+                        user_id: currentUser.user_id
+                    };
+                }
+                
+                const { error } = await supabaseClient.from('recipes').insert([sizzleData]);
                 
                 if (error) throw error;
                 
