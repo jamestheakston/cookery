@@ -1164,10 +1164,9 @@
                 const { data: preferences, error } = await supabaseClient
                     .from('user_preferences')
                     .select('dietary_requirements')
-                    .eq('user_id', userId)
-                    .single();
+                    .eq('user_id', userId);
                 
-                if (error && error.code !== 'PGRST116') {
+                if (error) {
                     throw error;
                 }
                 
@@ -1175,8 +1174,8 @@
                 const customInput = document.getElementById('customDietaryInput');
                 const customCard = document.getElementById('customDietaryCard');
                 
-                if (preferences && preferences.dietary_requirements) {
-                    const dietaryValue = preferences.dietary_requirements;
+                if (preferences && preferences.length > 0 && preferences[0].dietary_requirements) {
+                    const dietaryValue = preferences[0].dietary_requirements;
                     hiddenInput.value = dietaryValue;
                     
                     // Handle multiple selections (comma-separated)
