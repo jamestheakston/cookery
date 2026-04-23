@@ -1119,8 +1119,15 @@
         }
 
         async function saveDietaryPreferences() {
-            if (!currentUser || !currentUser.user_id) {
-                console.error('No current user or user_id available');
+            if (!currentUser) {
+                console.warn('No current user available');
+                return;
+            }
+            
+            // Use user.id instead of user.user_id for consistency
+            const userId = currentUser.id || currentUser.user_id;
+            if (!userId) {
+                console.error('No user ID available in current user object');
                 return;
             }
             
@@ -1130,7 +1137,7 @@
                 const { error } = await supabaseClient
                     .from('user_preferences')
                     .upsert({
-                        user_id: currentUser.user_id,
+                        user_id: userId,
                         dietary_requirements: dietaryRequirements
                     }, {
                         onConflict: 'user_id'
@@ -1147,11 +1154,17 @@
         async function loadDietaryPreferences() {
             if (!currentUser) return;
             
+            const userId = currentUser.id || currentUser.user_id;
+            if (!userId) {
+                console.error('No user ID available for loading dietary preferences');
+                return;
+            }
+            
             try {
                 const { data: preferences, error } = await supabaseClient
                     .from('user_preferences')
                     .select('dietary_requirements')
-                    .eq('user_id', currentUser.user_id)
+                    .eq('user_id', userId)
                     .single();
                 
                 if (error && error.code !== 'PGRST116') {
@@ -1854,10 +1867,18 @@
         window.addEventListener('message', async (event) => {
             if (event.data.type === 'JAMES_AUTH_SUCCESS') {
                 currentUser = event.data.user;
+                // Ensure user has both id and user_id for compatibility
+                if (!currentUser.user_id && currentUser.id) {
+                    currentUser.user_id = currentUser.id;
+                } else if (!currentUser.id && currentUser.user_id) {
+                    currentUser.id = currentUser.user_id;
+                }
+                
                 // Use James Auth avatar if available, otherwise fallback to UI avatar
                 currentUser.avatar = currentUser.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=orange&color=white`;
                 localStorage.setItem('james_auth_user', JSON.stringify(currentUser));
                 updateAuthUI();
+                loadDietaryPreferences(); // Load user's dietary preferences
                 showToast(`Welcome back, ${currentUser.name}!`);
             }
         });
@@ -1866,6 +1887,12 @@
             const savedUser = localStorage.getItem('james_auth_user');
             if (savedUser) {
                 currentUser = JSON.parse(savedUser);
+                // Ensure user has both id and user_id for compatibility
+                if (!currentUser.user_id && currentUser.id) {
+                    currentUser.user_id = currentUser.id;
+                } else if (!currentUser.id && currentUser.user_id) {
+                    currentUser.id = currentUser.user_id;
+                }
                 updateAuthUI();
                 loadDietaryPreferences(); // Load user's dietary preferences
             } else {
