@@ -2389,6 +2389,29 @@
                 </li>
             `).join('');
             
+            // Show loading state and set image
+            const imgElement = document.getElementById('resImage');
+            const loadingElement = document.getElementById('imgLoading');
+            
+            loadingElement.classList.remove('hidden');
+            imgElement.style.opacity = '0';
+            
+            // Set image source and handle load
+            imgElement.onload = function() {
+                loadingElement.classList.add('hidden');
+                imgElement.style.opacity = '1';
+                imgElement.style.transition = 'opacity 0.3s ease';
+            };
+            
+            imgElement.onerror = function() {
+                loadingElement.classList.add('hidden');
+                imgElement.src = 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
+                imgElement.style.opacity = '1';
+                imgElement.style.transition = 'opacity 0.3s ease';
+            };
+            
+            imgElement.src = recipe.img || 'https://images.unsplash.com/photo-1495195129352-aec325b55b65?q=80&w=600&auto=format&fit=crop';
+            
             // Set image attribution
             if (recipe.img && recipe.img.includes('unsplash')) {
                 // Get attribution from getFoodImage function or use default
