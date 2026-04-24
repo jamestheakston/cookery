@@ -237,10 +237,9 @@
                 <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                 <input type="text" placeholder="Search recipes..." class="w-full pl-12 pr-4 py-2 bg-white rounded-full border border-slate-200 focus:outline-none focus:ring-2 focus:ring-orange-500/20">
             </div>
-            <button class="bg-slate-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-slate-800 transition shadow-md active:scale-95">
+            <button onclick="showJamesAuthModal()" class="bg-slate-900 text-white px-6 py-2 rounded-full font-semibold hover:bg-slate-800 transition shadow-md active:scale-95">
                 <i class="fa-solid fa-sign-in-alt mr-2"></i>
                 <span class="hidden sm:inline">Sign In</span>
-            </button>
             </button>
         </header>
 
@@ -2050,28 +2049,28 @@
             // Check if this requirement already exists
             const existingCards = document.querySelectorAll('.dietary-card');
             for (let card of existingCards) {
-                if (card.textContent.trim().toLowerCase() === value.toLowerCase()) {
+                if (card.textContent.trim().toLowerCase().includes(value.toLowerCase())) {
                     showToast('This dietary requirement already exists');
                     return;
                 }
             }
             
             // Create new dietary card
-            const dietaryContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-4.gap-2');
+            const dietaryContainer = document.querySelector('.grid.grid-cols-2.md\\:grid-cols-3.lg\\:grid-cols-4.gap-3');
             const newCard = document.createElement('button');
             newCard.className = 'dietary-card px-4 py-3 rounded-xl border-2 border-slate-100 hover:border-orange-200 transition text-sm font-medium';
             newCard.onclick = () => selectDietaryCard(newCard, value);
             newCard.innerHTML = `<i class="fa-solid fa-tag mr-1"></i>${value}`;
             
-            // Add the new card to the container
-            dietaryContainer.appendChild(newCard);
+            // Add the new card before the custom card
+            const customCard = document.getElementById('customDietaryCard');
+            dietaryContainer.insertBefore(newCard, customCard);
             
             // Select the new card
             selectDietaryCard(newCard, value);
             
             // Clear the input and reset custom card
             input.value = '';
-            const customCard = document.getElementById('customDietaryCard');
             customCard.classList.add('border-dashed', 'border-slate-300');
             customCard.classList.remove('border-blue-400', 'bg-blue-50');
             
